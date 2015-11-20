@@ -27,7 +27,7 @@ date_default_timezone_set("Asia/Bangkok");
 </head>
 <body>
 <?php
-    include_once('themes/left.php');
+    //include_once('themes/left.php');
  ?>
  <div id="page-content-wrapper">
      <div class="container-fluid">

@@ -24,7 +24,7 @@
 </head>
 <body>
 <?php
-    include_once('themes/left.php');
+   // include_once('themes/left.php');
  ?>
  <div id="page-content-wrapper">
      <div class="container-fluid">

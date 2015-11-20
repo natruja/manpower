@@ -1,7 +1,5 @@
 <?php
- 
 date_default_timezone_set("Asia/Bangkok");
-
 ?>
 <!DOCTYPE html>
 <head>
@@ -302,7 +300,7 @@ date_default_timezone_set("Asia/Bangkok");
                                     <div class="row">
                                         <div class="col-xs-3">
                                             <i class="fa fa-male"></i>
-                                              หน่วยงานภายใน RO 10
+                                               &nbsp;&nbsp; ความเคลื่อนไหนภายในเดือนนี้
                                         </div>
                                     </div>
                                 </div>
@@ -314,10 +312,20 @@ date_default_timezone_set("Asia/Bangkok");
                                                 <tr>
                                                     <th rowspan="2">NO.</th>
                                                     <th rowspan="2"><div align="center">หน่วยงานใน RO10</div></th>
-                                                    <th colspan="3"><div align="center">อัตรากำลังประจำหน่วยงาน</div></th>
+                                                    <th colspan="3"><div align="center">อัตรากำลังที่มีอยู่ปัจจุบัน</div></th>
+                                                    <th rowspan="2"><div align="center">รวม</div></th>
+                                                    <th colspan="3"><div align="center">พนักงานลาออกในเดือน</div></th>
+                                                    <th rowspan="2"><div align="center">รวม</div></th>
+                                                     <th colspan="3"><div align="center">พนักงานเข้าใหม่ในเดือน</div></th>
                                                     <th rowspan="2"><div align="center">รวม</div></th>
                                                 </tr>
                                                 <tr>
+                                                    <th><div align="center">Permanent</div></th>
+                                                    <th><div align="center">Contract</div></th>
+                                                    <th><div align="center">Part Time</div></th>
+                                                    <th><div align="center">Permanent</div></th>
+                                                    <th><div align="center">Contract</div></th>
+                                                    <th><div align="center">Part Time</div></th>
                                                     <th><div align="center">Permanent</div></th>
                                                     <th><div align="center">Contract</div></th>
                                                     <th><div align="center">Part Time</div></th>
@@ -348,84 +356,9 @@ date_default_timezone_set("Asia/Bangkok");
                                                      $department_id = $value["department_id"];
                                                      $emp_type = $value["emp_type_id"];
 
-                                              ?>
+                                                        // ลาออก
 
-                                                <tr>
-                                                    <td><?php echo $count; ?></td>
-                                                    <td>
-                                                        <a  href="preview.php?division=<?php echo $department_id; ?>" ><?php echo $name; ?></a>
-                                                    </td>
-
-                                                    <td><?php echo ($value["emp"]== "0"  ?  '-' : $value["emp"]); ?></a></td>
-                                                    <td><?php echo ($value["contract"]== "0"  ?  '-' : $value["contract"]); ?></td>
-                                                    <td><?php echo ($value["part_time"]== "0"  ?  '-' : $value["part_time"]); ?></td>
-                                                    <td><?php echo ($value["total"]== "0"  ?  '-' : $value["total"]); ?></td>
-                                                </tr>
-                                                <?php
-                                                        $count++;
-                                                }
-                                                ?>
-                                                <tr>
-                                                    <td colspan="2"><div align="right"><b>รวม</b></div></td>
-                                                   <?php
-                                                   $all = $db->query('SELECT COUNT(CASE WHEN all_ro10_emp.emp_type_id = 1 then 1 ELSE NULL END) as "emp",
-                                                                            COUNT(CASE WHEN all_ro10_emp.emp_type_id = 2 then 1 ELSE NULL END) as "contract",
-                                                                            COUNT(CASE WHEN all_ro10_emp.emp_type_id = 3 then 1 ELSE NULL END) as "part_time",
-                                                                            COUNT(all_ro10_emp.division) as "total"
-                                                                      FROM all_ro10_emp
-                                                                      WHERE all_ro10_emp.data_date = :today ');
-                                                    $all = $db->bind(':today', $today);
-                                                    $all = $db->execute();
-                                                    $all = $db->fetchNum();
-                                                   ?>
-                                                    <td><?php echo ($all[0]== "0"  ?  '-' : $all[0]); ?></td>
-                                                    <td><?php echo ($all[1]== "0"  ?  '-' : $all[1]); ?></td>
-                                                    <td><?php echo ($all[2]== "0"  ?  '-' : $all[2]); ?></td>
-                                                    <td><?php echo ($all[3]== "0"  ?  '-' : $all[3]); ?></td>
-                                                </tr>
-                                             </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                         <div class="panel panel-red">
-                                <div class="panel-heading">
-                                    <div class="row">
-                                        <div class="col-xs-3">
-                                            <i class="fa fa-male"></i>
-                                              พนักงานลาออกในเดือน
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel-body">
-                                <table class="table table-striped table-bordered">
-                                    <caption>รายชื่อพนักงานลาออก</caption>
-                                    <thead>
-                                        <tr>
-                                            <th rowspan="2">NO.</th>
-                                            <th rowspan="2"><div align="center">หน่วยงานใน RO10</div></th>
-                                            <th colspan="3"><div align="center">อัตรากำลังประจำหน่วยงาน</div></th>
-                                            <th rowspan="2"><div align="center">รวม</div></th>
-                                        </tr>
-                                        <tr>
-                                            <th><div align="center">Permanent</div></th>
-                                            <th><div align="center">Contract</div></th>
-                                            <th><div align="center">Part Time</div></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php
-                                    $finish_s = $db->query(' SELECT * FROM all_tttbb_division');
-                                        $i = 1;
-                                        $finish_s = $db->fetch();
-                                        foreach ($finish_s as $key => $v) {
-                                            $div = $v["division"];
-
-                                             $sql = $db->query('SELECT
+                                                        $sql = $db->query('SELECT
                                                                     all_ro10_emp_trans.date_finish,
                                                                     all_ro10_emp_trans.division,
                                                                     all_ro10_emp_trans.section,
@@ -440,28 +373,72 @@ date_default_timezone_set("Asia/Bangkok");
                                                                 WHERE MONTH(all_ro10_emp_trans.date_finish) = :month
                                                                 AND date(all_ro10_emp_trans.data_date) = :today
                                                                 AND (YEAR(all_ro10_emp_trans.date_finish) = :year OR YEAR(all_ro10_emp_trans.date_finish) = :thai_year)
-                                                                AND all_ro10_emp_trans.division = :div');
-                                             $sql = $db->bind(':today', $today);
-                                             $sql = $db->bind(':month', $month);
-                                             $sql = $db->bind(':div', $div);
-                                             $sql = $db->bind(':year', $year);
-                                             $sql = $db->bind(':thai_year', $year_thai);
-                                             $sql = $db->single();
-                                     ?>
-                                       <tr>
-                                            <td><?php echo $i ?></td>
-                                            <td><?php echo $div; ?></td>
-                                            <td><?php echo ($sql["emp"] == "0"  ?  '-' : $sql["emp"]); ?></td>
-                                            <td><?php echo ($sql["contract"] == "0"  ?  '-' : $sql["contract"]); ?></td>
-                                            <td><?php echo ($sql["part_time"]== "0"  ?  '-' : $sql["part_time"]); ?></td>
-                                            <td><?php echo ($sql["total"]== "0"  ?  '-' : $sql["total"]); ?></td>
-                                        </tr>
-                                        <?php
-                                        $i++;
-                                            }
-                                         ?>
-                                         <?php
-                                             $toal = $db->query('SELECT
+                                                                AND all_ro10_emp_trans.division = :name');
+                                                         $sql = $db->bind(':today', $today);
+                                                         $sql = $db->bind(':month', $month);
+                                                         $sql = $db->bind(':name', $name);
+                                                         $sql = $db->bind(':year', $year);
+                                                         $sql = $db->bind(':thai_year', $year_thai);
+                                                         $sql = $db->single();
+
+                                                         //เข้าใหม่
+
+                                                          $start_emp = $db->query('SELECT  COUNT(CASE WHEN all_ro10_emp.emp_type_id = 1 then 1 ELSE NULL END) as "emp",
+                                                                             COUNT(CASE WHEN all_ro10_emp.emp_type_id = 2 then 1 ELSE NULL END) as "contract",
+                                                                             COUNT(CASE WHEN all_ro10_emp.emp_type_id = 3 then 1 ELSE NULL END) as "part_time",
+                                                                             COUNT(all_ro10_emp.division) as "total"
+                                                                  FROM all_ro10_emp
+                                                                 WHERE MONTH(date_start) = :month
+                                                                 AND (YEAR(date_start) = :thai_year OR  YEAR(date_start) = :year)
+                                                                 AND data_date = :today
+                                                                 AND division = :name');
+                                                           $start_emp = $db->bind(':year', $year, PDO::PARAM_STR);
+                                                           $start_emp = $db->bind(':month', $month, PDO::PARAM_STR);
+                                                           $start_emp = $db->bind(':thai_year', $year_thai, PDO::PARAM_STR);
+                                                           $start_emp = $db->bind(':today', $today, PDO::PARAM_STR);
+                                                           $start_emp = $db->bind(':name', $name);
+                                                           $start_emp = $db->single();
+
+
+                                              ?>
+
+                                                <tr>
+                                                    <td><?php echo $count; ?></td>
+                                                    <td> <!-- <a  href="preview.php?division=<?php //echo $department_id; ?>" > -->
+                                                       <?php echo $name; ?><!-- </a> -->
+                                                    </td>
+                                                    <td><?php echo ($value["emp"]== "0"  ?  '-' : $value["emp"]); ?></a></td>
+                                                    <td><?php echo ($value["contract"]== "0"  ?  '-' : $value["contract"]); ?></td>
+                                                    <td><?php echo ($value["part_time"]== "0"  ?  '-' : $value["part_time"]); ?></td>
+                                                    <td><?php echo ($value["total"]== "0"  ?  '-' : $value["total"]); ?></td>
+                                                    <td><?php echo ($sql["emp"] == "0"  ?  '-' : $sql["emp"]); ?></td>
+                                                    <td><?php echo ($sql["contract"] == "0"  ?  '-' : $sql["contract"]); ?></td>
+                                                    <td><?php echo ($sql["part_time"]== "0"  ?  '-' : $sql["part_time"]); ?></td>
+                                                    <td><?php echo ($sql["total"]== "0"  ?  '-' : $sql["total"]); ?></td>
+                                                    <td><?php echo ($start_emp["emp"] == "0" ?  '-' : $start_emp["emp"]); ?></td>
+                                                    <td><?php echo ($start_emp["contract"] == "0" ? '-' : $start_emp["contract"]); ?></td>
+                                                    <td><?php echo ($start_emp["part_time"] == "0" ? '-': $start_emp["part_time"]); ?></td>
+                                                    <td><?php echo ($start_emp["total"] == "0" ? '-' : $start_emp["total"]); ?></td>
+                                                </tr>
+                                                <?php
+                                                        $count++;
+                                                }
+                                                ?>
+                                                <tr>
+                                                  <td colspan="2"><div align="right"><b>รวม</b></div></td>
+                                                   <?php
+                                                   $all = $db->query('SELECT COUNT(CASE WHEN all_ro10_emp.emp_type_id = 1 then 1 ELSE NULL END) as "emp",
+                                                                            COUNT(CASE WHEN all_ro10_emp.emp_type_id = 2 then 1 ELSE NULL END) as "contract",
+                                                                            COUNT(CASE WHEN all_ro10_emp.emp_type_id = 3 then 1 ELSE NULL END) as "part_time",
+                                                                            COUNT(all_ro10_emp.division) as "total"
+                                                                      FROM all_ro10_emp
+                                                                      WHERE all_ro10_emp.data_date = :today ');
+                                                    $all = $db->bind(':today', $today);
+                                                    $all = $db->execute();
+                                                    $all = $db->fetchNum();
+
+                                            //ลาออก
+                                            $toal = $db->query('SELECT
                                                                     all_ro10_emp_trans.date_finish,
                                                                     all_ro10_emp_trans.division,
                                                                     all_ro10_emp_trans.emp_id,
@@ -474,94 +451,15 @@ date_default_timezone_set("Asia/Bangkok");
                                                                     all_ro10_emp_trans
                                                                 WHERE MONTH(all_ro10_emp_trans.date_finish) = :month
                                                                 AND date(all_ro10_emp_trans.data_date) = :today
-                                                                AND (YEAR(all_ro10_emp_trans.date_finish) = :year OR YEAR(all_ro10_emp_trans.date_finish) = :thai_year)
-                                                                 ');
+                                                                AND (YEAR(all_ro10_emp_trans.date_finish) = :year OR YEAR(all_ro10_emp_trans.date_finish) = :thai_year) ');
                                              $toal = $db->bind(':today', $today);
                                              $toal = $db->bind(':month', $month);
                                              $toal = $db->bind(':year', $year);
                                              $toal = $db->bind(':thai_year', $year_thai);
                                              $toal = $db->single();
-                                        ?>
-                                         <tr>
-                                             <td colspan="2" align="right"><b>รวม</b></td>
-                                             <td><?php echo ($toal["emp"] == "0"  ?  '-' : $toal["emp"]);   ?></td>
-                                             <td><?php echo ($toal["contract"]== "0"  ?  '-' : $toal["contract"]);  ?></td>
-                                             <td><?php echo ($toal["part_time"]== "0"  ?  '-' : $toal["part_time"]);  ?></td>
-                                             <td><?php echo ($toal["all"]== "0"  ?  '-' : $toal["all"]);  ?></td>
-                                         </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div><!-- panel panel-red -->
-                    </div><!-- col-lg-12 -->
-                </div><!-- row -->
 
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="panel panel-green">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-male"></i>
-                                          พนักงานใหม่ในเดือนนี้
-                                    </div>
-                                </div>
-                             </div>
-                            <div class="panel-body">
-                                <table class="table table-striped table-bordered" id="new_emp" cellspacing="0" width="100%">
-                                    <caption>พนักงานใหม่ในเดือนนี้</caption>
-                                    <thead>
-                                        <tr>
-                                            <th rowspan="2">NO.</th>
-                                            <th rowspan="2"><div align="center">หน่วยงานใน RO10</div></th>
-                                            <th colspan="3"><div align="center">อัตรากำลังประจำหน่วยงาน</div></th>
-                                            <th rowspan="2"><div align="center">รวม</div></th>
-                                        </tr>
-                                        <tr>
-                                            <th><div align="center">Permanent</div></th>
-                                            <th><div align="center">Contract</div></th>
-                                            <th><div align="center">Part Time</div></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php
-                                        $finish_s = $db->query(' SELECT * FROM all_tttbb_division');
-                                        $i = 1;
-                                        $finish_s = $db->fetch();
-                                        foreach ($finish_s as $key => $v) {
-                                            $div = $v["division"];
-                                            $start_emp = $db->query('SELECT  COUNT(CASE WHEN all_ro10_emp.emp_type_id = 1 then 1 ELSE NULL END) as "emp",
-                                                                             COUNT(CASE WHEN all_ro10_emp.emp_type_id = 2 then 1 ELSE NULL END) as "contract",
-                                                                             COUNT(CASE WHEN all_ro10_emp.emp_type_id = 3 then 1 ELSE NULL END) as "part_time",
-                                                                             COUNT(all_ro10_emp.division) as "total"
-                                                                  FROM all_ro10_emp
-                                                                 WHERE MONTH(date_start) = :month
-                                                                 AND (YEAR(date_start) = :thai_year OR  YEAR(date_start) = :year)
-                                                                 AND data_date = :today
-                                                                 AND division = :div');
-                                           $start_emp = $db->bind(':year', $year, PDO::PARAM_STR);
-                                           $start_emp = $db->bind(':month', $month, PDO::PARAM_STR);
-                                           $start_emp = $db->bind(':thai_year', $year_thai, PDO::PARAM_STR);
-                                           $start_emp = $db->bind(':today', $today, PDO::PARAM_STR);
-                                           $start_emp = $db->bind(':div', $div);
-                                           $start_emp = $db->single();
-                                       ?>
-                                        <tr>
-
-                                            <td><?php echo  $i; ?></td>
-                                            <td><?php echo $v["division"]; ?></td>
-                                            <td><?php echo ($start_emp["emp"] == "0" ?  '-' : $start_emp["emp"]); ?></td>
-                                            <td><?php echo ($start_emp["contract"] == "0" ? '-' : $start_emp["contract"]); ?></td>
-                                            <td><?php echo ($start_emp["part_time"] == "0" ? '-': $start_emp["part_time"]); ?></td>
-                                            <td><?php echo ($start_emp["total"] == "0" ? '-' : $start_emp["total"]); ?></td>
-
-                                        </tr>
-                                        <?php
-                                        $i++;
-                                             }
-                                         ?>
-                                          <?php
-                                             $toal_new = $db->query('SELECT
+                                             //เข้าใหม่
+                                                 $toal_new = $db->query('SELECT
                                                                     all_ro10_emp.date_start,
                                                                     all_ro10_emp.division,
                                                                     all_ro10_emp.emp_id,
@@ -569,7 +467,7 @@ date_default_timezone_set("Asia/Bangkok");
                                                                     COUNT(CASE WHEN all_ro10_emp.emp_type_id = 1 then 1 ELSE NULL END) as "emp",
                                                                     COUNT(CASE WHEN all_ro10_emp.emp_type_id = 2 then 1 ELSE NULL END) as "contract",
                                                                     COUNT(CASE WHEN all_ro10_emp.emp_type_id = 3 then 1 ELSE NULL END) as "part_time",
-                                                                    COUNT(all_ro10_emp.division) as "all_emp"
+                                                                    COUNT(all_ro10_emp.emp_id) as "all_emp"
                                                                 FROM
                                                                     all_ro10_emp
                                                                 WHERE MONTH(all_ro10_emp.date_start) = :month
@@ -580,82 +478,196 @@ date_default_timezone_set("Asia/Bangkok");
                                              $toal_new = $db->bind(':year', $year);
                                              $toal_new = $db->bind(':thai_year', $year_thai);
                                              $toal_new = $db->single();
-                                        ?>
-                                         <tr>
-                                             <td colspan="2" align="right"><b>รวม</b></td>
-                                             <td><?php echo ($toal_new["emp"] == "0"  ?  '-' : $toal_new["emp"]); ?></td>
-                                             <td><?php echo ($toal_new["contract"] == "0"  ? '-' : $toal_new["contract"]); ?></td>
-                                             <td><?php echo ($toal_new["part_time"] == "0"  ?  '-' : $toal_new["part_time"]); ?></td>
-                                             <td><?php echo ($toal_new["all_emp"] == "0"  ?  '-' : $toal_new["all_emp"]); ?></td>
-                                         </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-6">
-                        <div class="panel panel-yellow">
-                            <div class="panel-heading">
-                                <div class="row">
-                                     <div class="col-xs-3">
-                                        <i class="fa fa-male"></i>
-                                         อัตรากำลังแต่ละหน่วยงาน
+
+                                                   ?>
+                                                    <td><?php echo ($all[0]== "0"  ?  '-' : $all[0]); ?></td>
+                                                    <td><?php echo ($all[1]== "0"  ?  '-' : $all[1]); ?></td>
+                                                    <td><?php echo ($all[2]== "0"  ?  '-' : $all[2]); ?></td>
+                                                    <td><?php echo ($all[3]== "0"  ?  '-' : $all[3]); ?></td>
+                                                    <td><?php echo ($toal["emp"] == "0"  ?  '-' : $toal["emp"]);   ?></td>
+                                                    <td><?php echo ($toal["contract"]== "0"  ?  '-' : $toal["contract"]);  ?></td>
+                                                    <td><?php echo ($toal["part_time"]== "0"  ?  '-' : $toal["part_time"]);  ?></td>
+                                                    <td><?php echo ($toal["all"]== "0"  ?  '-' : $toal["all"]);  ?></td>
+                                                    <td><?php echo ($toal_new["emp"] == "0"  ?  '-' : $toal_new["emp"]); ?></td>
+                                                    <td><?php echo ($toal_new["contract"] == "0"  ? '-' : $toal_new["contract"]); ?></td>
+                                                    <td><?php echo ($toal_new["part_time"] == "0"  ?  '-' : $toal_new["part_time"]); ?></td>
+                                                    <td><?php echo ($toal_new["all_emp"] == "0"  ?  '-' : $toal_new["all_emp"]); ?></td>
+                                                </tr>
+                                             </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-                            <div class="panel-body">
-                                <table class="table table-striped table-bordered" id="current" cellspacing="0" width="100%">
-                                    <caption>อัตรากำลังแต่ละหน่วยงาน</caption>
-                                    <thead>
-                                        <tr>
-                                            <th rowspan="2">NO.</th>
-                                            <th rowspan="2"><div align="center">หน่วยงานใน RO10</div></th>
-                                            <th colspan="3"><div align="center">อัตรากำลังประจำหน่วยงาน</div></th>
-                                            <th rowspan="2"><div align="center">รวม</div></th>
-                                        </tr>
-                                        <tr>
-                                            <th><div align="center">Permanent</div></th>
-                                            <th><div align="center">Contract</div></th>
-                                            <th><div align="center">Part Time</div></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php 
+                        </div>
+                    </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                    <div class="row">                      
+                       <div class="col-xs-3">
+                            <i class="fa fa-male"></i>
+                               &nbsp;&nbsp; อัตราความต้องการของแต่ละหน่วยงาน
+                        </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-lg-12">
+                            <table class="table table-striped table-bordered" id="current" cellspacing="0" width="100%">
+                                <caption>ตารางสรุปอัตราความต้องการ</caption>
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">NO.</th>
+                                        <th rowspan="2"><div align="center">หน่วยงานใน RO10</div></th>
+                                        <th colspan="3"><div align="center">อัตรากำลังความต้องการ</div></th>
+                                        <th rowspan="2"><div align="center">รวม</div></th>
+                                        <th colspan="3"><div align="center">อัตราที่มีอยู่ปัจจุบัน</div></th>
+                                        <th rowspan="2"><div align="center">รวม</div></th>
+                                        <th colspan="3"><div align="center">อัตราความต้องการแต่ละหน่วยงาน</div></th>
+                                        <th rowspan="2"><div align="center">รวม</div></th>
+                                    </tr>
+                                    <tr>
+                                        <th><div align="center">Permanent</div></th>
+                                        <th><div align="center">Contract</div></th>
+                                        <th><div align="center">Part Time</div></th>
+                                        <th><div align="center">Permanent</div></th>
+                                        <th><div align="center">Contract</div></th>
+                                        <th><div align="center">Part Time</div></th>
+                                        <th><div align="center">Permanent</div></th>
+                                        <th><div align="center">Contract</div></th>
+                                        <th><div align="center">Part Time</div></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php 
 
-                                            $current = $db->query('SELECT
-                                                                        SUM(all_ro10_emp_master.staff) as staff,
-                                                                        SUM(all_ro10_emp_master.contract) as contract,
-                                                                        SUM(all_ro10_emp_master.train) as train,
-                                                                         all_ro10_emp_master.division
-                                                                    FROM
-                                                                        all_ro10_emp_master
-                                                                    GROUP BY division
-                                                                    ORDER BY division DESC');
-                                            $current = $db->fetch();
-                                              $i = 1 ;
-                                           foreach ($current as $value) {
-                                            $total = $value["staff"] + $value["contract"] + $value["train"];
-                                        ?>
-                                        <tr>
-                                            <td><?php echo $i; ?></td>
-                                            <td><?php echo $value["division"]; ?></td>
-                                            <td><?php echo $value["staff"]; ?></td>
-                                            <td><?php echo $value["contract"]; ?></td>
-                                            <td><?php echo $value["train"]; ?></td>
-                                            <td><?php echo $total; ?></td>
-                                        </tr>
-                                        <?php
-                                            $i++; 
-                                            }
-                                         ?>
-                                    </tbody>
-                                </table>
-                            </div>
+                                     $current = $db->query('SELECT
+                                                                SUM(all_ro10_emp_master.staff) as staff,
+                                                                SUM(all_ro10_emp_master.contract) as contract,
+                                                                SUM(all_ro10_emp_master.train) as train,
+                                                                 all_ro10_emp_master.division
+                                                            FROM
+                                                                all_ro10_emp_master
+                                                            GROUP BY division
+                                                            ORDER BY division DESC');
+                                     $current = $db->fetch();
+                                      $i = 1 ;
+                                     foreach ($current as $key => $v) {
+                                        $total = $v["staff"] + $v["contract"] + $v["train"];
+                                        $division_v = $v["division"];
+                                       
+                                              $curent_now = $db->query('SELECT all_ro10_emp.division,
+                                                                            COUNT(CASE WHEN all_ro10_emp.emp_type_id = 1 then 1 ELSE NULL END) as "emp",
+                                                                            COUNT(CASE WHEN all_ro10_emp.emp_type_id = 2 then 1 ELSE NULL END) as "contract",
+                                                                            COUNT(CASE WHEN all_ro10_emp.emp_type_id = 3 then 1 ELSE NULL END) as "part_time",
+                                                                            COUNT(all_ro10_emp.emp_type_id) as "total"
+                                                                        FROM all_ro10_emp
+                                                                         
+                                                                        WHERE all_ro10_emp.data_date = :today
+                                                                        AND all_ro10_emp.division = :division');
+                                               $curent_now = $db->bind(':today', $today);
+                                               $curent_now = $db->bind(':division', $division_v);
+                                               $curent_now = $db->execute();
+                                               $curent_now = $db->single();
+
+
+                                               $emp = $curent_now["emp"];
+                                               $contract = $curent_now["contract"];
+                                               $part_time = $curent_now["part_time"];
+                                               $total_all = $curent_now["total"];
+
+                                               $all_emp = $v["staff"] - $emp;
+                                               $all_contract = $v["contract"] - $contract;
+                                               $all_part = $v["train"] - $part_time;
+                                               $all_total = $total - $total_all;
+
+
+                                               
+
+                                 ?>
+                                    <tr>
+                                        <td><?php echo $i; ?></td>
+                                        <td><?php echo $division_v; ?></td>
+                                        <td><?php echo $v["staff"]; ?></td>
+                                        <td><?php echo $v["contract"]; ?></td>
+                                        <td><?php echo $v["train"]; ?></td>
+                                        <td><?php echo $total; ?></td>
+                                        <td><?php echo ($curent_now["emp"]== "0"  ?  '-' : $curent_now["emp"]); ?></a></td>
+                                        <td><?php echo ($curent_now["contract"]== "0"  ?  '-' : $curent_now["contract"]); ?></td>
+                                        <td><?php echo ($curent_now["part_time"]== "0"  ?  '-' : $curent_now["part_time"]); ?></td>
+                                        <td><?php echo ($curent_now["total"]== "0"  ?  '-' : $curent_now["total"]); ?></td>
+                                        <td><?php echo ($all_emp == "0"  ?  '-' : $all_emp); ?></td>
+                                        <td><?php echo ($all_contract == "0"  ?  '-' : $all_contract); ?></td>
+                                        <td><?php echo ($all_part == "0"  ?  '-' : $all_part); ?></td>
+                                        <td><?php echo ($all_total == "0"  ?  '-' : $all_total); ?></td>
+                                    </tr>
+                                    <?php 
+                                        $i++;
+                                        }
+                                     ?>
+                                     <?php 
+                                    $current = $db->query('SELECT
+                                                                SUM(all_ro10_emp_master.staff) as staff,
+                                                                SUM(all_ro10_emp_master.contract) as contract_all,
+                                                                SUM(all_ro10_emp_master.train) as part_time,
+                                                                all_ro10_emp_master.division
+                                                            FROM
+                                                                all_ro10_emp_master
+                                                              ');
+                                     $current = $db->single();
+                                     $contract_all = $current["contract_all"];
+                                     $part_time = $current["part_time"];
+                                     $staff= $current["staff"];
+                                     $total = $staff + $contract_all + $part_time;
+                                    
+                                      $curent_now = $db->query('SELECT all_ro10_emp.division,all_ro10_emp.data_date,
+                                                                            COUNT(CASE WHEN all_ro10_emp.emp_type_id = 1 then 1 ELSE NULL END) as "emp",
+                                                                            COUNT(CASE WHEN all_ro10_emp.emp_type_id = 2 then 1 ELSE NULL END) as "contract_all",
+                                                                            COUNT(CASE WHEN all_ro10_emp.emp_type_id = 3 then 1 ELSE NULL END) as "part_time",
+                                                                            COUNT(all_ro10_emp.emp_type_id) as "total"
+                                                                        FROM all_ro10_emp
+                                                                        WHERE all_ro10_emp.data_date = :today  ');
+                                       $curent_now = $db->bind(':today', $today);
+                                       $curent_now = $db->single();
+                                       $cur_emp = $curent_now["emp"];
+                                       $cur_contract = $curent_now["contract_all"];
+                                       $cur_part_time = $curent_now["part_time"];
+                                       $cur_total = $curent_now["total"];
+
+                                       $all_emp = abs($cur_emp) - abs($current["staff"]);
+                                       $all_contract = $current["contract_all"] - $cur_contract;
+                                       $all_train_ =  $current["part_time"] - $cur_part_time;
+                                       $all_total =$total - $cur_total ;
+
+
+                                ?>
+                                    <tr>
+                                        <td colspan="2"><div align="right"><b>รวม</b></div></td>
+                                        <td><?php echo abs($current["staff"]); ?></td>
+                                        <td><?php echo abs($current["contract_all"]); ?></td>
+                                        <td><?php echo abs($current["part_time"]); ?></td>
+                                        <td><?php echo abs($total); ?></td>
+                                        <td><?php echo abs($curent_now["emp"]); ?></td>
+                                        <td><?php echo abs($curent_now["contract_all"]); ?></td>
+                                        <td><?php echo abs($curent_now["part_time"]); ?></td>
+                                        <td><?php echo abs($curent_now["total"]); ?></td>
+                                        <td><?php echo abs($all_emp) ?></td>
+                                        <td><?php echo abs($all_contract) ?></td>
+                                        <td><?php echo abs($all_train_) ?></td>
+                                        <td><?php echo abs($all_total) ?></td>
+                                    </tr>
+                                 </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+                
+
+
+
 
 
 

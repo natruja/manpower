@@ -27,14 +27,14 @@ date_default_timezone_set("Asia/Bangkok");
 </head>
 <body>
 <?php
-    include_once('themes/left.php');
+    //include_once('themes/left.php');
  ?>
  <div id="page-content-wrapper">
      <div class="container-fluid">
       <?php 
         $monthNum  = date("m");
         $dateObj   = DateTime::createFromFormat('!m', $monthNum);
-        $monthName = $dateObj->format('F'); // March
+        $monthName = $dateObj->format('F'); 
         
       ?>
         <h1>พนักงานเข้าใหม่ <?php echo $monthName; ?></h1>
