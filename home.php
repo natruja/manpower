@@ -21,6 +21,8 @@ date_default_timezone_set("Asia/Bangkok");
     <script src="bower_components/datatables/media/js/jquery.dataTables.js"></script>
     <script src="bower_components/datatables/media/js/dataTables.bootstrap.js"></script>
     <script src="bower_components/datatables-responsive/js/dataTables.responsive.js"></script>
+    <!--<script src="bower_components/table/FileSaver/FileSaver.min.js"></script>-->
+    <script src="bower_components/table/tableExport.min.js" type="text/javascript"></script>
     <script src="js/manpower.js"></script>
 
 </head>
@@ -80,7 +82,7 @@ date_default_timezone_set("Asia/Bangkok");
          $finish = $db->bind(':thai_year', $year_thai);
          $finish = $db->execute();
          $count = $db->rowCount();
-        
+
 
 
         $new = $db->query("SELECT date_finish FROM all_ro10_emp_trans
@@ -92,7 +94,7 @@ date_default_timezone_set("Asia/Bangkok");
         $new = $db->bind(':today', $today);
         $new = $db->bind(':thai_year', $year_thai);
         $new = $db->execute();
-         $count_new = $db->rowCount();
+        $count_new = $db->rowCount();
         $diff = $count_new - $count;
 
 
@@ -141,7 +143,7 @@ date_default_timezone_set("Asia/Bangkok");
                                 <div class="panel-heading">
                                     <div class="row">
                                         <div class="col-xs-3">
-                                            <i class="fa fa-male fa-5x "></i>
+                                            <i class="fa fa-male fa-5x"></i>
                                         </div>
                                         <div class="col-xs-9 text-right">
                                             <div class="huge"><?php echo $emp; ?></div>
@@ -292,7 +294,6 @@ date_default_timezone_set("Asia/Bangkok");
                         </div>
                     </div><!-- col-lg-12 -->
                </div><!-- row -->
-
                    <div class="row">
                        <div class="col-lg-12">
                             <div class="panel panel-primary">
@@ -306,8 +307,17 @@ date_default_timezone_set("Asia/Bangkok");
                                 </div>
                                 <div class="panel-body">
                                     <div class="col-lg-12">
-                                        <table class="table table-striped table-bordered" id="total" cellspacing="0" width="100%">
-                                            <caption>อัตรากำลังที่มีอยู่ปัจจุบัน</caption>
+
+                                        <table class="table table-striped table-bordered numformat" id="total" width="100%">
+                                            <div class="pull-left">
+                                                  ตารางสรุปความเคลื่อนไหวภายในเดือน <?php echo date('F'); ?>
+                                            </div>
+                                            <div class="pull-right">
+
+                                                <a href="#" onClick="doExport('#total', {type: 'excel',fileName: 'ตารางสรุปความเคลื่อนไหวภายในเดือน <?php echo date('M'),"-",$year; ?>' ,worksheetName: 'ความเคลื่อนไหนภายในเดือนนี้'});">
+                                                    <img src='icons/csv.png' alt="CSV" style="width:24px">Excel File
+                                                </a>
+                                            </div>
                                             <thead>
                                                 <tr>
                                                     <th rowspan="2">NO.</th>
@@ -316,7 +326,7 @@ date_default_timezone_set("Asia/Bangkok");
                                                     <th rowspan="2"><div align="center">รวม</div></th>
                                                     <th colspan="3"><div align="center">พนักงานลาออกในเดือน</div></th>
                                                     <th rowspan="2"><div align="center">รวม</div></th>
-                                                     <th colspan="3"><div align="center">พนักงานเข้าใหม่ในเดือน</div></th>
+                                                    <th colspan="3"><div align="center">พนักงานเข้าใหม่ในเดือน</div></th>
                                                     <th rowspan="2"><div align="center">รวม</div></th>
                                                 </tr>
                                                 <tr>
@@ -404,8 +414,8 @@ date_default_timezone_set("Asia/Bangkok");
 
                                                 <tr>
                                                     <td><?php echo $count; ?></td>
-                                                    <td> <!-- <a  href="preview.php?division=<?php //echo $department_id; ?>" > -->
-                                                       <?php echo $name; ?><!-- </a> -->
+                                                    <td>  <a  href="preview.php?division=<?php echo $department_id; ?>" >
+                                                       <?php echo $name; ?> </a>
                                                     </td>
                                                     <td><?php echo ($value["emp"]== "0"  ?  '-' : $value["emp"]); ?></a></td>
                                                     <td><?php echo ($value["contract"]== "0"  ?  '-' : $value["contract"]); ?></td>
@@ -504,7 +514,7 @@ date_default_timezone_set("Asia/Bangkok");
             <div class="col-lg-12">
                 <div class="panel panel-green">
                     <div class="panel-heading">
-                    <div class="row">                      
+                    <div class="row">
                        <div class="col-xs-3">
                             <i class="fa fa-male"></i>
                                &nbsp;&nbsp; อัตราความต้องการของแต่ละหน่วยงาน
@@ -514,7 +524,14 @@ date_default_timezone_set("Asia/Bangkok");
                     <div class="panel-body">
                         <div class="col-lg-12">
                             <table class="table table-striped table-bordered" id="current" cellspacing="0" width="100%">
-                                <caption>ตารางสรุปอัตราความต้องการ</caption>
+                            <div class="pull-left">
+                                 ตารางสรุปอัตราความต้องการ <?php echo date('F'); ?>
+                            </div>
+                            <div class="pull-right">
+                                <a href="#" onClick="doExport('#current', {type: 'excel',fileName: 'อัตราความต้องการของแต่ละหน่วยงาน <?php echo date('M'),"-",$year; ?>' ,worksheetName: 'อัตราความต้องการของแต่ละหน่วยงาน'});">
+                                    <img src='icons/csv.png' alt="CSV" style="width:24px">Excel File
+                                </a>
+                            </div>
                                 <thead>
                                     <tr>
                                         <th rowspan="2">NO.</th>
@@ -539,7 +556,7 @@ date_default_timezone_set("Asia/Bangkok");
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <?php 
+                                <?php
 
                                      $current = $db->query('SELECT
                                                                 SUM(all_ro10_emp_master.staff) as staff,
@@ -553,16 +570,16 @@ date_default_timezone_set("Asia/Bangkok");
                                      $current = $db->fetch();
                                       $i = 1 ;
                                      foreach ($current as $key => $v) {
-                                        $total = $v["staff"] + $v["contract"] + $v["train"];
+                                        $total_diff = $v["staff"] + $v["contract"] + $v["train"];
                                         $division_v = $v["division"];
-                                       
+
                                               $curent_now = $db->query('SELECT all_ro10_emp.division,
                                                                             COUNT(CASE WHEN all_ro10_emp.emp_type_id = 1 then 1 ELSE NULL END) as "emp",
                                                                             COUNT(CASE WHEN all_ro10_emp.emp_type_id = 2 then 1 ELSE NULL END) as "contract",
                                                                             COUNT(CASE WHEN all_ro10_emp.emp_type_id = 3 then 1 ELSE NULL END) as "part_time",
                                                                             COUNT(all_ro10_emp.emp_type_id) as "total"
                                                                         FROM all_ro10_emp
-                                                                         
+
                                                                         WHERE all_ro10_emp.data_date = :today
                                                                         AND all_ro10_emp.division = :division');
                                                $curent_now = $db->bind(':today', $today);
@@ -579,10 +596,8 @@ date_default_timezone_set("Asia/Bangkok");
                                                $all_emp = $v["staff"] - $emp;
                                                $all_contract = $v["contract"] - $contract;
                                                $all_part = $v["train"] - $part_time;
-                                               $all_total = $total - $total_all;
+                                               $all_total = $total_diff - $total_all;
 
-
-                                               
 
                                  ?>
                                     <tr>
@@ -591,7 +606,7 @@ date_default_timezone_set("Asia/Bangkok");
                                         <td><?php echo $v["staff"]; ?></td>
                                         <td><?php echo $v["contract"]; ?></td>
                                         <td><?php echo $v["train"]; ?></td>
-                                        <td><?php echo $total; ?></td>
+                                        <td><?php echo $total_diff; ?></td>
                                         <td><?php echo ($curent_now["emp"]== "0"  ?  '-' : $curent_now["emp"]); ?></a></td>
                                         <td><?php echo ($curent_now["contract"]== "0"  ?  '-' : $curent_now["contract"]); ?></td>
                                         <td><?php echo ($curent_now["part_time"]== "0"  ?  '-' : $curent_now["part_time"]); ?></td>
@@ -601,11 +616,11 @@ date_default_timezone_set("Asia/Bangkok");
                                         <td><?php echo ($all_part == "0"  ?  '-' : $all_part); ?></td>
                                         <td><?php echo ($all_total == "0"  ?  '-' : $all_total); ?></td>
                                     </tr>
-                                    <?php 
+                                    <?php
                                         $i++;
                                         }
                                      ?>
-                                     <?php 
+                                     <?php
                                     $current = $db->query('SELECT
                                                                 SUM(all_ro10_emp_master.staff) as staff,
                                                                 SUM(all_ro10_emp_master.contract) as contract_all,
@@ -619,7 +634,7 @@ date_default_timezone_set("Asia/Bangkok");
                                      $part_time = $current["part_time"];
                                      $staff= $current["staff"];
                                      $total = $staff + $contract_all + $part_time;
-                                    
+
                                       $curent_now = $db->query('SELECT all_ro10_emp.division,all_ro10_emp.data_date,
                                                                             COUNT(CASE WHEN all_ro10_emp.emp_type_id = 1 then 1 ELSE NULL END) as "emp",
                                                                             COUNT(CASE WHEN all_ro10_emp.emp_type_id = 2 then 1 ELSE NULL END) as "contract_all",
@@ -635,7 +650,7 @@ date_default_timezone_set("Asia/Bangkok");
                                        $cur_total = $curent_now["total"];
 
                                        $all_emp = abs($cur_emp) - abs($current["staff"]);
-                                       $all_contract = $current["contract_all"] - $cur_contract;
+                                       $all_contract =  $cur_contract - $current["contract_all"];
                                        $all_train_ =  $current["part_time"] - $cur_part_time;
                                        $all_total =$total - $cur_total ;
 
@@ -664,7 +679,7 @@ date_default_timezone_set("Asia/Bangkok");
             </div>
         </div>
 
-                
+
 
 
 

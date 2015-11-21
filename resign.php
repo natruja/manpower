@@ -1,4 +1,4 @@
-<?php 
+<?php
 date_default_timezone_set("Asia/Bangkok");
 ?>
 <!DOCTYPE html>
@@ -31,11 +31,11 @@ date_default_timezone_set("Asia/Bangkok");
  ?>
  <div id="page-content-wrapper">
      <div class="container-fluid">
-      <?php 
+      <?php
         $monthNum  = date("m");
         $dateObj   = DateTime::createFromFormat('!m', $monthNum);
-        $monthName = $dateObj->format('F'); 
-        
+        $monthName = $dateObj->format('F');
+
       ?>
         <h1>พนักงานเข้าใหม่ <?php echo $monthName; ?></h1>
         <hr>
@@ -70,14 +70,15 @@ date_default_timezone_set("Asia/Bangkok");
                                                       INNER JOIN all_ro10_emp ON all_ro10_emp_trans.e_firstname = all_ro10_emp.e_firstname AND all_ro10_emp_trans.e_lastname = all_ro10_emp.e_lastname
                                                       WHERE MONTH(all_ro10_emp_trans.date_finish) = :month
                                                       AND all_ro10_emp.data_date = :today
-                                                      AND (YEAR(all_ro10_emp_trans.date_finish) = :year OR YEAR(all_ro10_emp_trans.date_finish) = :thai_year)");
+                                                      AND (YEAR(all_ro10_emp_trans.date_finish) = :year OR YEAR(all_ro10_emp_trans.date_finish) = :thai_year)
+                                                      AND all_ro10_emp_trans.ExpiredCaseID != 0 ");
                            $finish = $db->bind(':month', $month);
                            $finish = $db->bind(':year', $year);
                            $finish = $db->bind(':today', $today);
                            $finish = $db->bind(':thai_year', $year_thai);
                            $finish = $db->execute();
                            $count = $db->rowCount();
-                          
+
 
                             $new = $db->query("SELECT date_finish,emp_id,t_firstname,t_lastname,section,division,date_finish FROM all_ro10_emp_trans
                                                 WHERE MONTH(all_ro10_emp_trans.date_finish) = :month
@@ -89,9 +90,9 @@ date_default_timezone_set("Asia/Bangkok");
                             $new = $db->bind(':thai_year', $year_thai);
                             $new = $db->execute();
                             $count_new = $db->rowCount();
-                        
 
-                               
+
+
                              ?>
                                  <table class="table table-striped table-bordered" id="new_emp" cellspacing="0" width="100%">
                                     <thead>
@@ -115,7 +116,7 @@ date_default_timezone_set("Asia/Bangkok");
                                             <td><?php echo  $i; ?></td>
                                             <td><?php echo $value["emp_id"]; ?></td>
                                             <td><?php echo $value["t_firstname"]; ?></td>
-                                            <td><?php echo $value["t_lastname"]; ?></td>               
+                                            <td><?php echo $value["t_lastname"]; ?></td>
                                             <td><?php echo $value["section"]; ?></td>
                                             <td><?php echo $value["division"]; ?></td>
                                             <td><?php echo $value["date_finish"]; ?></td>

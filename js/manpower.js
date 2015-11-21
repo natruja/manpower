@@ -13,3 +13,13 @@ $(document).ready(function() {
     });
     var deetail_emp = $('#deetail_emp').DataTable();
 });
+function doExport(selector, params) {
+      var options = {
+        tableName: 'total',
+        worksheetName: 'All_total'
+      };
+
+      $.extend(true, options, params);
+
+      $(selector).tableExport(options);
+  }
