@@ -18,17 +18,15 @@
     <script src="bower_components/datatables/media/js/dataTables.bootstrap.js"></script>
     <script src="bower_components/datatables-responsive/js/dataTables.responsive.js"></script>
     <script src="js/manpower.js"></script>
-    <script type="text/javascript">
-      function list()
-      {
-         document.form_name.submit();
-      }
-</script>
+      <script type="text/javascript">
+        function list()
+        {
+           document.active.submit();
+           event.preventDefault()
+        }
+      </script>
   </head>
   <body>
-    <?php
-    //include_once('themes/left.php');
-    ?>
     <div id="page-content-wrapper">
       <div class="container-fluid">
         <h2>พนักงานในหน่วยงาน
@@ -55,7 +53,7 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="col-lg-2">
-                 <div align="right"><h4>เลือกหน่วยงาน</h4></div>
+                 <div align="right"><h4>Select Section</h4></div>
               </div>
               <div class="col-lg-4">
                   <div class="dropdown">
@@ -64,33 +62,52 @@
                                               FROM all_ro10_emp
                                               WHERE division = :division
                                               AND data_date = :today
-                                              GROUP BY section
-                                              ORDER BY date_start ASC');
+                                              GROUP BY section');
                             $section = $db->bind(':today', $today, PDO::PARAM_STR);
                             $section = $db->bind(':division', $division_name, PDO::PARAM_STR);
                             $section = $db->execute();
                       ?>
-                      <form name='form_name' action='' method='GET'>
-                      <select class="form-control" id="section" name="section" onchange="list()">
-                          <option value="0"> - - เลือกทั้งหมด - - </option>
+                      <form name='active' action='' method='GET'>
+                      <select class="form-control" id="section" name="section" onchange="list(this.selectedIndex)" >
+                          <option value="0"> - - เลือก - - </option>
                           <?php
                              $section = $db->fetch();
+
+
                              foreach ($section as $key => $v) {
                                   $section_name = $v['section'];
+
                                   echo "<option value='".$section_name."'>",$section_name,"</option>";
                               }
                            ?>
                            <input type="hidden" value="<?php echo $division ?>" name="division">
                       </select>
-                  </form>
+                      </form>
                   </div>
               </div>
             </div>
           </div>
+          <br>
+          <div class="row">
+          <div class="col-lg-12">
+             <div class="col-lg-4" style="width: 18%">
+                <a href="home.php" class="btn btn-primary">Home</a>
+                <a href="preview.php?division=<?php echo $division ?>" class="btn btn-danger">เลือกทุกหน่วยงาน</a>
+              </div>
+             <div class="col-lg-4" style="padding-left: 0px;"><div class="alert alert-success " role="alert"> คุณเลือกหน่วยงาน :
+                  <?php
+                      if(isset($_GET["section"]) ){
+                          echo $_GET["section"];
+                       }else{
+                          echo "ทั้งหมด";
+                       }
+                    ?>
+               </div></div>
+        </div>
+        </div>
         <hr>
-
-      <?php
-        if(isset($_GET["section"])){
+        <?php
+        if(isset($_GET["section"]) AND ($_GET["section"]) !== "0"){
            $section = $_GET["section"];
            $detail_division = $db->query('SELECT emp_id,t_firstname,t_lastname,job_title,section,division,date_start,
                                          COUNT(CASE WHEN emp_type_id = 1 then 1 ELSE NULL END) as "emp",
@@ -237,7 +254,7 @@
                 <div class="panel-body">
                   <div class="col-lg-12 col-md-6">
                     <?php
-                    if(isset($_GET["section"])){
+                    if(isset($_GET["section"])  AND ($_GET["section"]) !== "0"){
                         $section = $_GET["section"];
                         $detail_division = $db->query('SELECT emp_id,t_firstname,t_lastname,job_title,section,division,date_start  FROM all_ro10_emp
                                                       WHERE division = :division
@@ -301,5 +318,6 @@
           </div>
         </div>
       </div>
+
     </body>
   </html>
