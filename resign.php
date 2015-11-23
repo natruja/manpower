@@ -37,7 +37,7 @@ date_default_timezone_set("Asia/Bangkok");
         $monthName = $dateObj->format('F');
 
       ?>
-        <h1>พนักงานเข้าใหม่ <?php echo $monthName; ?></h1>
+        <h1>พนักงานลาออกในเดือน <?php echo $monthName; ?></h1>
         <hr>
         <div class="row">
             <div class="col-lg-12 col-md-6">

@@ -19,6 +19,44 @@
 .panel-green a:hover {
     color: #3d8b3d;
 }
+.panel-pink {
+    border-color: #FE2EC8;
+}
+
+.panel-pink .panel-heading {
+    border-color: #FE2EC8;
+    color: #fff;
+    background-color: #FE2EC8;
+}
+
+.panel-pink a {
+    color: #5cb85c;
+}
+
+.panel-pink a:hover {
+    color: #3d8b3d;
+}
+
+
+.panel-sky {
+    border-color: #81DAF5;
+}
+
+.panel-sky .panel-heading {
+    border-color: #81DAF5;
+    color: #fff;
+    background-color: #81DAF5;
+}
+
+.panel-sky a {
+    color: #5cb85c;
+}
+
+.panel-sky a:hover {
+    color: #3d8b3d;
+}
+
+
 
 .panel-red {
     border-color: #d9534f;

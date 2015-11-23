@@ -39,7 +39,7 @@
             require_once('core/init.php');
             $db = new DB;
             $division =  htmlspecialchars($_GET["division"]);
-              $id_division = $db->query('SELECT department_id,division FROM all_tttbb_division WHERE department_id = :id_division');
+              $id_division = $db->query('SELECT department_id,division FROM all_tttbb_division2 WHERE department_id = :id_division');
               $id_division = $db->bind(':id_division', $division, PDO::PARAM_STR);
               $id_division = $db->execute();
               $id_division = $db->single();
@@ -156,13 +156,7 @@
                   </div>
                 </div>
               </div>
-              <a href="#">
-                <div class="panel-footer">
-                  <span class="pull-left">พนักงานทั้งหมด</span>
-                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                  <div class="clearfix"></div>
-                </div>
-              </a>
+              
               </div><!-- panel panel-primary -->
             </div>
             <div class="col-lg-3 col-md-6">
@@ -178,13 +172,7 @@
                   </div>
                 </div>
               </div>
-              <a href="#">
-                <div class="panel-footer">
-                  <span class="pull-left">View Details</span>
-                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                  <div class="clearfix"></div>
-                </div>
-              </a>
+              
               </div><!-- panel panel-primary -->
             </div><!-- col-lg-3 col-md-6 -->
             <div class="col-lg-3 col-md-6">
@@ -200,13 +188,6 @@
                   </div>
                 </div>
               </div>
-              <a href="resign.php">
-                <div class="panel-footer">
-                  <span class="pull-left">View Details</span>
-                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                  <div class="clearfix"></div>
-                </div>
-              </a>
               </div><!-- panel panel-primary -->
             </div><!-- col-lg-3 col-md-6 -->
             <div class="col-lg-3 col-md-6">
@@ -222,13 +203,7 @@
                   </div>
                 </div>
               </div>
-              <a href="resign.php">
-                <div class="panel-footer">
-                  <span class="pull-left">View Details</span>
-                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                  <div class="clearfix"></div>
-                </div>
-              </a>
+              
               </div><!-- panel panel-primary -->
             </div><!-- col-lg-3 col-md-6 -->
 
