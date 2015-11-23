@@ -21,7 +21,6 @@ date_default_timezone_set("Asia/Bangkok");
     <script src="bower_components/datatables/media/js/jquery.dataTables.js"></script>
     <script src="bower_components/datatables/media/js/dataTables.bootstrap.js"></script>
     <script src="bower_components/datatables-responsive/js/dataTables.responsive.js"></script>
-    <!--<script src="bower_components/table/FileSaver/FileSaver.min.js"></script>-->
     <script src="bower_components/table/tableExport.min.js" type="text/javascript"></script>
     <script src="js/manpower.js"></script>
 
@@ -60,16 +59,14 @@ date_default_timezone_set("Asia/Bangkok");
         $stmt = $db->rowCount();
        //echo $stmt;
 
-
-
-        $finish = $db->query("SELECT    all_ro10_emp.data_date,
-                                        all_ro10_emp.emp_id,
-                                        all_ro10_emp.e_firstname,
-                                        all_ro10_emp.e_lastname,
-                                        all_ro10_emp.job_title,
-                                        all_ro10_emp_trans.e_firstname,
-                                        all_ro10_emp_trans.e_lastname,
-                                        all_ro10_emp_trans.date_finish
+    $finish = $db->query("SELECT    all_ro10_emp.data_date,
+                                    all_ro10_emp.emp_id,
+                                    all_ro10_emp.e_firstname,
+                                    all_ro10_emp.e_lastname,
+                                    all_ro10_emp.job_title,
+                                    all_ro10_emp_trans.e_firstname,
+                                    all_ro10_emp_trans.e_lastname,
+                                    all_ro10_emp_trans.date_finish
                             FROM
                                     all_ro10_emp_trans
                             INNER JOIN all_ro10_emp ON all_ro10_emp_trans.e_firstname = all_ro10_emp.e_firstname AND all_ro10_emp_trans.e_lastname = all_ro10_emp.e_lastname
@@ -110,13 +107,14 @@ date_default_timezone_set("Asia/Bangkok");
            $start_emp = $db->execute();
            $start_emp = $db->rowCount();
 
-
+           //add new line
 
            $type_emp = $db->query(
                 'SELECT
                     COUNT(CASE WHEN emp_type_id = 1 then 1 ELSE NULL END) as "emp",
                     COUNT(CASE WHEN emp_type_id = 2 then 1 ELSE NULL END) as "contract",
-                    COUNT(CASE WHEN emp_type_id = 3 then 1 ELSE NULL END) as "part_time"
+                    COUNT(CASE WHEN emp_type_id = 3 then 1 ELSE NULL END) as "part_time",
+                    COUNT(emp_id) as all_emp
                 FROM all_ro10_emp WHERE data_date = :today ');
            $type_emp = $db->bind(':today', $today);
            $type_emp = $db->execute();
@@ -124,6 +122,8 @@ date_default_timezone_set("Asia/Bangkok");
            $emp        =  $result["emp"];
            $contract   =  $result["contract"];
            $part_time  =  $result["part_time"];
+            $all_emp  =  $result["all_emp"];
+         
 
         ?>
         <!-- Page Content -->
@@ -138,8 +138,24 @@ date_default_timezone_set("Asia/Bangkok");
                 <hr>
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="col-lg-4 col-md-6">
+                        <div class="col-lg-3 col-md-6">
                             <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="fa fa-male fa-5x"></i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                            <div class="huge"><?php echo $all_emp; ?></div>
+                                            <div>รวมพนักงานทั้งหมด</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div><!-- panel panel-primary -->
+                        </div><!-- col-lg-3 col-md-6 -->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-pink">
                                 <div class="panel-heading">
                                     <div class="row">
                                         <div class="col-xs-3">
@@ -151,16 +167,9 @@ date_default_timezone_set("Asia/Bangkok");
                                         </div>
                                     </div>
                                 </div>
-                                <a href="#">
-                                    <div class="panel-footer">
-                                        <span class="pull-left">View Details</span>
-                                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </a>
                             </div><!-- panel panel-primary -->
                         </div><!-- col-lg-3 col-md-6 -->
-                        <div class="col-lg-4 col-md-6">
+                        <div class="col-lg-3 col-md-6">
                              <div class="panel panel-green">
                                 <div class="panel-heading">
                                     <div class="row">
@@ -173,16 +182,10 @@ date_default_timezone_set("Asia/Bangkok");
                                         </div>
                                     </div>
                                 </div>
-                                <a href="#">
-                                    <div class="panel-footer">
-                                        <span class="pull-left">View Details</span>
-                                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </a>
+                                
                             </div><!-- panel panel-primary -->
                         </div>
-                         <div class="col-lg-4 col-md-6">
+                         <div class="col-lg-3 col-md-6">
                              <div class="panel panel-yellow">
                                 <div class="panel-heading">
                                     <div class="row">
@@ -195,17 +198,11 @@ date_default_timezone_set("Asia/Bangkok");
                                         </div>
                                     </div>
                                 </div>
-                                <a href="#">
-                                    <div class="panel-footer">
-                                        <span class="pull-left">View Details</span>
-                                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </a>
+                                 
                             </div><!-- panel panel-primary -->
                         </div>
                         <div class="col-lg-3 col-md-6">
-                             <div class="panel panel-info">
+                             <div class="panel panel-green">
                                 <div class="panel-heading">
                                     <div class="row">
                                         <div class="col-xs-3">
@@ -213,21 +210,14 @@ date_default_timezone_set("Asia/Bangkok");
                                         </div>
                                         <div class="col-xs-9 text-right">
                                             <div class="huge"><?php  echo $start_emp; ?></div>
-                                            <div><a href="new_emp.php">เข้าใหม่</a></div>
+                                            <div><a href="new_emp.php"><font color="white">เข้าใหม่</font></a></div>
                                         </div>
                                     </div>
-                                </div>
-                                <a href="new_emp.php">
-                                    <div class="panel-footer">
-                                        <span class="pull-left">View Details</span>
-                                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </a>
+                                </div>                                
                             </div><!-- panel panel-primary -->
                         </div>
                         <div class="col-lg-3 col-md-6">
-                             <div class="panel panel-success">
+                             <div class="panel panel-red">
                                 <div class="panel-heading">
                                     <div class="row">
                                         <div class="col-xs-3">
@@ -235,17 +225,11 @@ date_default_timezone_set("Asia/Bangkok");
                                         </div>
                                         <div class="col-xs-9 text-right">
                                             <div class="huge"><?php  echo $count_new;  ?></div>
-                                            <div><a href="resign.php">ลาออก</a></div>
+                                            <div><a href="resign.php"><font color="white">ลาออก</font></a></div>
                                         </div>
                                     </div>
                                 </div>
-                                <a href="resign.php">
-                                    <div class="panel-footer">
-                                        <span class="pull-left">View Details</span>
-                                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </a>
+                                
                             </div><!-- panel panel-primary -->
                         </div>
                          <div class="col-lg-3 col-md-6">
@@ -261,13 +245,7 @@ date_default_timezone_set("Asia/Bangkok");
                                         </div>
                                     </div>
                                 </div>
-                                <a href="#">
-                                    <div class="panel-footer">
-                                        <span class="pull-left">View Details</span>
-                                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </a>
+                                
                             </div><!-- panel panel-primary -->
                         </div>
                          <div class="col-lg-3 col-md-6">
@@ -283,13 +261,7 @@ date_default_timezone_set("Asia/Bangkok");
                                         </div>
                                     </div>
                                 </div>
-                                <a href="#">
-                                    <div class="panel-footer">
-                                        <span class="pull-left">View Details</span>
-                                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </a>
+                                
                             </div><!-- panel panel-primary -->
                         </div>
                     </div><!-- col-lg-12 -->
@@ -679,21 +651,10 @@ date_default_timezone_set("Asia/Bangkok");
             </div>
         </div>
 
-
-
-
-
-
-
-
-
-
-
             </div><!-- container-fluid -->
         </div><!-- page-content-wrapper -->
 
 
-
-    <script src="js/sidebar_menu.js"></script>
+   
 </body>
 </html>
