@@ -59,9 +59,6 @@ date_default_timezone_set("Asia/Bangkok");
         $stmt = $db->execute();
         $stmt = $db->rowCount();
        //echo $stmt;
-
-
-
         $finish = $db->query("SELECT    all_ro10_emp.data_date,
                                         all_ro10_emp.emp_id,
                                         all_ro10_emp.e_firstname,
@@ -81,10 +78,9 @@ date_default_timezone_set("Asia/Bangkok");
          $finish = $db->bind(':today', $today);
          $finish = $db->bind(':thai_year', $year_thai);
          $finish = $db->execute();
-         $count = $db->rowCount();
+         $finish = $db->rowCount();
         
-
-
+        
         $new = $db->query("SELECT date_finish FROM all_ro10_emp_trans
                             WHERE MONTH(all_ro10_emp_trans.date_finish) = :month
                             AND all_ro10_emp_trans.data_date = :today
@@ -94,7 +90,7 @@ date_default_timezone_set("Asia/Bangkok");
         $new = $db->bind(':today', $today);
         $new = $db->bind(':thai_year', $year_thai);
         $new = $db->execute();
-         $count_new = $db->rowCount();
+        $count_new = $db->rowCount();
         $diff = $count_new - $count;
 
 
@@ -131,7 +127,7 @@ date_default_timezone_set("Asia/Bangkok");
             <div class="container-fluid">
                 <div class="row">
                 <div class="col-lg-12">
-                        <h1>RO10 Manpower</h1>
+                        <h1>RO10 Manpower </h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div><!-- row -->

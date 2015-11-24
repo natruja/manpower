@@ -42,61 +42,24 @@ date_default_timezone_set("Asia/Bangkok");
             $yesterday->toDateString();
 
          //$last_month = date("Y-n-j", strtotime("last day of previous month"));
-         //echo $last_month,"<br>";
-
         $db = new DB;
 
-        $emp_last = $db->query('SELECT data_date  FROM all_ro10_emp WHERE data_date = :yesterday');
-        $emp_last = $db->bind(':yesterday', $yesterday, PDO::PARAM_STR);
-        $emp_last = $db->execute();
-        $emp_last = $db->rowCount();
-       //echo $emp_last;
-
-
-        $stmt = $db->query('SELECT data_date  FROM all_ro10_emp  WHERE data_date = :today');
-        $stmt = $db->bind(':today', $today);
-        $stmt = $db->execute();
-        $stmt = $db->rowCount();
-       //echo $stmt;
-
-    $finish = $db->query("SELECT    all_ro10_emp.data_date,
-                                    all_ro10_emp.emp_id,
-                                    all_ro10_emp.e_firstname,
-                                    all_ro10_emp.e_lastname,
-                                    all_ro10_emp.job_title,
-                                    all_ro10_emp_trans.e_firstname,
-                                    all_ro10_emp_trans.e_lastname,
-                                    all_ro10_emp_trans.date_finish
-                            FROM
-                                    all_ro10_emp_trans
-                            INNER JOIN all_ro10_emp ON all_ro10_emp_trans.e_firstname = all_ro10_emp.e_firstname AND all_ro10_emp_trans.e_lastname = all_ro10_emp.e_lastname
-                            WHERE MONTH(all_ro10_emp_trans.date_finish) = :month
-                            AND all_ro10_emp.data_date = :today
-                            AND (YEAR(all_ro10_emp_trans.date_finish) = :year OR YEAR(all_ro10_emp_trans.date_finish) = :thai_year)");
-         $finish = $db->bind(':month', $month);
-         $finish = $db->bind(':year', $year);
-         $finish = $db->bind(':today', $today);
-         $finish = $db->bind(':thai_year', $year_thai);
-         $finish = $db->execute();
-         $count = $db->rowCount();
-
-
-
-        $new = $db->query("SELECT date_finish FROM all_ro10_emp_trans
+       
+        $new = $db->query("SELECT date_finish 
+                            FROM all_ro10_emp_trans
                             WHERE MONTH(all_ro10_emp_trans.date_finish) = :month
                             AND all_ro10_emp_trans.data_date = :today
-                            AND (YEAR(all_ro10_emp_trans.date_finish) = :year OR YEAR(all_ro10_emp_trans.date_finish) = :thai_year)");
+                            AND (YEAR(all_ro10_emp_trans.date_finish) = :year OR YEAR(all_ro10_emp_trans.date_finish) = :thai_year)
+                            AND ExpiredCaseID != '0' ");
         $new = $db->bind(':month', $month);
         $new = $db->bind(':year', $year);
         $new = $db->bind(':today', $today);
         $new = $db->bind(':thai_year', $year_thai);
         $new = $db->execute();
-        $count_new = $db->rowCount();
-        $diff = $count_new - $count;
+        $emp_out = $db->rowCount();
+        
 
-
-
-           $start_emp = $db->query('SELECT date_start  FROM all_ro10_emp
+            $start_emp = $db->query('SELECT date_start  FROM all_ro10_emp
                                  WHERE MONTH(date_start) = :month
                                  AND (YEAR(date_start) = :thai_year OR  YEAR(date_start) = :year)
                                  AND data_date = :today ');
@@ -224,7 +187,7 @@ date_default_timezone_set("Asia/Bangkok");
                                             <i class="fa fa-male fa-5x "></i>
                                         </div>
                                         <div class="col-xs-9 text-right">
-                                            <div class="huge"><?php  echo $count_new;  ?></div>
+                                            <div class="huge"><?php  echo $emp_out;  ?></div>
                                             <div><a href="resign.php"><font color="white">ลาออก</font></a></div>
                                         </div>
                                     </div>
@@ -286,7 +249,7 @@ date_default_timezone_set("Asia/Bangkok");
                             </div>
                             <div class="pull-right">
                                 <a href="#" onClick="doExport('#current', {type: 'excel',fileName: 'อัตราความต้องการของแต่ละหน่วยงาน <?php echo date('M'),"-",$year; ?>' ,worksheetName: 'อัตราความต้องการของแต่ละหน่วยงาน'});">
-                                    <img src='icons/xls.png' alt="CSV" style="width:24px">Excel
+                                    <img src='icons/xls.png' alt="CSV" style="width:24px">
                                 </a>
                             </div>
                                 <thead>
@@ -456,7 +419,7 @@ date_default_timezone_set("Asia/Bangkok");
                                             <div class="pull-right">
 
                                                 <a href="#" onClick="doExport('#total', {type: 'excel',fileName: 'ตารางสรุปความเคลื่อนไหวภายในเดือน <?php echo date('M'),"-",$year; ?>' ,worksheetName: 'ความเคลื่อนไหนภายในเดือนนี้'});">
-                                                    <img src='icons/xls.png' alt="Xls" style="width:24px">Excel File
+                                                    <img src='icons/xls.png' alt="Xls" style="width:24px">
                                                 </a>
                                             </div>
                                             <thead>
@@ -508,7 +471,6 @@ date_default_timezone_set("Asia/Bangkok");
                                                      $emp_type = $value["emp_type_id"];
 
                                                         // ลาออก
-
                                                         $sql = $db->query('SELECT
                                                                     all_ro10_emp_trans.date_finish,
                                                                     all_ro10_emp_trans.division,

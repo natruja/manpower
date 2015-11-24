@@ -10,7 +10,7 @@
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="bower_components/datatables/media/css/dataTables.bootstrap.css" rel="stylesheet">
      <link href="bower_components/datatables-responsive/css/dataTables.responsive.css" rel="stylesheet">
-    <link href="font-awesome-4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="bower_components/font-awesome-4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="css/simple-sidebar.css" rel="stylesheet">
     <link href="css/manpower.css" rel="stylesheet" >
 
