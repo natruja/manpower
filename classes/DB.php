@@ -2,9 +2,9 @@
 
 class DB{
    private static $_instance = null;
-    private $host      = "10.11.22.40";
+    private $host      = "127.0.0.1";
     private $user      = "root";
-    private $pass      = "ro10app";
+    private $pass      = "";
     private $dbname    = "ro10_main";
     private $dbh;
     private $error;
