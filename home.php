@@ -38,14 +38,15 @@ date_default_timezone_set("Asia/Bangkok");
             $number = "1";
 
             use Carbon\Carbon;
+
             $yesterday = Carbon::yesterday();
             $yesterday->toDateString();
 
          //$last_month = date("Y-n-j", strtotime("last day of previous month"));
         $db = new DB;
 
-       
-        $new = $db->query("SELECT date_finish 
+
+        $new = $db->query("SELECT date_finish
                             FROM all_ro10_emp_trans
                             WHERE MONTH(all_ro10_emp_trans.date_finish) = :month
                             AND all_ro10_emp_trans.data_date = :today
@@ -57,7 +58,7 @@ date_default_timezone_set("Asia/Bangkok");
         $new = $db->bind(':thai_year', $year_thai);
         $new = $db->execute();
         $emp_out = $db->rowCount();
-        
+
 
             $start_emp = $db->query('SELECT date_start  FROM all_ro10_emp
                                  WHERE MONTH(date_start) = :month
@@ -72,13 +73,12 @@ date_default_timezone_set("Asia/Bangkok");
 
            //add new line
 
-           $type_emp = $db->query(
-                'SELECT
-                    COUNT(CASE WHEN emp_type_id = 1 then 1 ELSE NULL END) as "emp",
-                    COUNT(CASE WHEN emp_type_id = 2 then 1 ELSE NULL END) as "contract",
-                    COUNT(CASE WHEN emp_type_id = 3 then 1 ELSE NULL END) as "part_time",
-                    COUNT(emp_id) as all_emp
-                FROM all_ro10_emp WHERE data_date = :today ');
+           $type_emp = $db->query('SELECT
+                                    COUNT(CASE WHEN emp_type_id = 1 then 1 ELSE NULL END) as "emp",
+                                    COUNT(CASE WHEN emp_type_id = 2 then 1 ELSE NULL END) as "contract",
+                                    COUNT(CASE WHEN emp_type_id = 3 then 1 ELSE NULL END) as "part_time",
+                                    COUNT(emp_id) as all_emp
+                                  FROM all_ro10_emp WHERE data_date = :today ');
            $type_emp = $db->bind(':today', $today);
            $type_emp = $db->execute();
            $result =  $db->single();
@@ -86,7 +86,7 @@ date_default_timezone_set("Asia/Bangkok");
            $contract   =  $result["contract"];
            $part_time  =  $result["part_time"];
             $all_emp  =  $result["all_emp"];
-         
+
 
         ?>
         <!-- Page Content -->
@@ -114,7 +114,7 @@ date_default_timezone_set("Asia/Bangkok");
                                         </div>
                                     </div>
                                 </div>
-                                
+
                             </div><!-- panel panel-primary -->
                         </div><!-- col-lg-3 col-md-6 -->
                         <div class="col-lg-3 col-md-6">
@@ -145,7 +145,7 @@ date_default_timezone_set("Asia/Bangkok");
                                         </div>
                                     </div>
                                 </div>
-                                
+
                             </div><!-- panel panel-primary -->
                         </div>
                          <div class="col-lg-3 col-md-6">
@@ -161,7 +161,7 @@ date_default_timezone_set("Asia/Bangkok");
                                         </div>
                                     </div>
                                 </div>
-                                 
+
                             </div><!-- panel panel-primary -->
                         </div>
                         <div class="col-lg-3 col-md-6">
@@ -176,7 +176,7 @@ date_default_timezone_set("Asia/Bangkok");
                                             <div><a href="new_emp.php"><font color="white">เข้าใหม่</font></a></div>
                                         </div>
                                     </div>
-                                </div>                                
+                                </div>
                             </div><!-- panel panel-primary -->
                         </div>
                         <div class="col-lg-3 col-md-6">
@@ -192,7 +192,7 @@ date_default_timezone_set("Asia/Bangkok");
                                         </div>
                                     </div>
                                 </div>
-                                
+
                             </div><!-- panel panel-primary -->
                         </div>
                          <div class="col-lg-3 col-md-6">
@@ -208,7 +208,7 @@ date_default_timezone_set("Asia/Bangkok");
                                         </div>
                                     </div>
                                 </div>
-                                
+
                             </div><!-- panel panel-primary -->
                         </div>
                          <div class="col-lg-3 col-md-6">
@@ -224,7 +224,7 @@ date_default_timezone_set("Asia/Bangkok");
                                         </div>
                                     </div>
                                 </div>
-                                
+
                             </div><!-- panel panel-primary -->
                         </div>
                     </div><!-- col-lg-12 -->
@@ -278,7 +278,7 @@ date_default_timezone_set("Asia/Bangkok");
                                 <tbody>
                                 <?php
 
-                                     $current = $db->query('SELECT
+                                       $current = $db->query('SELECT
                                                                 SUM(all_ro10_emp_master.staff) as staff,
                                                                 SUM(all_ro10_emp_master.contract) as contract,
                                                                 SUM(all_ro10_emp_master.train) as train,
@@ -288,12 +288,15 @@ date_default_timezone_set("Asia/Bangkok");
                                                                 all_ro10_emp_master
                                                             GROUP BY division
                                                             ORDER BY division DESC');
-                                     $current = $db->fetch();
-                                      $i = 1 ;
-                                     foreach ($current as $key => $v) {
-                                        $total_diff = $v["staff"] + $v["contract"] + $v["train"];
-                                        $division_v = $v["division"];
-                                        $department_id = $v["department_id"];
+                                      $current = $db->fetch();
+                                      $i = 1;
+
+
+                                        foreach ($current as $key => $v) {
+
+                                              $total_diff = $v["staff"] + $v["contract"] + $v["train"];
+                                              $division_v = $v["division"];
+                                              $department_id = $v["department_id"];
 
                                               $curent_now = $db->query('SELECT all_ro10_emp.division,
                                                                             COUNT(CASE WHEN all_ro10_emp.emp_type_id = 1 then 1 ELSE NULL END) as "emp",
@@ -320,8 +323,7 @@ date_default_timezone_set("Asia/Bangkok");
                                                $all_part = $v["train"] - $part_time;
                                                $all_total = $total_diff - $total_all;
 
-
-                                 ?>
+                                ?>
                                     <tr>
                                         <td><?php echo $i; ?></td>
                                         <td> <a href="preview.php?division=<?php echo $department_id; ?>" ><?php echo $division_v; ?></a></td>
@@ -339,9 +341,9 @@ date_default_timezone_set("Asia/Bangkok");
                                         <td><?php echo ($all_total == "0"  ?  '-' : $all_total); ?></td>
                                     </tr>
                                     <?php
-                                        $i++;
+                                            $i++;
                                         }
-                                     ?>
+                                    ?>
                                 <?php
                                     $current = $db->query('SELECT
                                                                 SUM(all_ro10_emp_master.staff) as staff,
@@ -349,8 +351,7 @@ date_default_timezone_set("Asia/Bangkok");
                                                                 SUM(all_ro10_emp_master.train) as part_time,
                                                                 all_ro10_emp_master.division
                                                             FROM
-                                                                all_ro10_emp_master
-                                                              ');
+                                                                all_ro10_emp_master');
                                      $current = $db->single();
                                      $contract_all = $current["contract_all"];
                                      $part_time = $current["part_time"];
@@ -378,18 +379,18 @@ date_default_timezone_set("Asia/Bangkok");
                                 ?>
                                     <tr>
                                         <td colspan="2"><div align="right"><b>รวม</b></div></td>
-                                        <td><?php echo abs($current["staff"]); ?></td>
-                                        <td><?php echo abs($current["contract_all"]); ?></td>
-                                        <td><?php echo abs($current["part_time"]); ?></td>
-                                        <td><?php echo abs($total); ?></td>
-                                        <td><?php echo abs($curent_now["emp"]); ?></td>
-                                        <td><?php echo abs($curent_now["contract_all"]); ?></td>
-                                        <td><?php echo abs($curent_now["part_time"]); ?></td>
-                                        <td><?php echo abs($curent_now["total"]); ?></td>
-                                        <td><?php echo abs($all_emp) ?></td>
-                                        <td><?php echo abs($all_contract) ?></td>
-                                        <td><?php echo abs($all_train_) ?></td>
-                                        <td><?php echo abs($all_total) ?></td>
+                                        <td><?php echo ($current["staff"]); ?></td>
+                                        <td><?php echo ($current["contract_all"]); ?></td>
+                                        <td><?php echo ($current["part_time"]); ?></td>
+                                        <td><?php echo ($total); ?></td>
+                                        <td><?php echo ($curent_now["emp"]); ?></td>
+                                        <td><?php echo ($curent_now["contract_all"]); ?></td>
+                                        <td><?php echo ($curent_now["part_time"]); ?></td>
+                                        <td><?php echo ($curent_now["total"]); ?></td>
+                                        <td><?php echo ($all_emp) ?></td>
+                                        <td><?php echo ($all_contract) ?></td>
+                                        <td><?php echo ($all_train_) ?></td>
+                                        <td><?php echo ($all_total) ?></td>
                                     </tr>
                                  </tbody>
                             </table>
@@ -464,11 +465,11 @@ date_default_timezone_set("Asia/Bangkok");
                                                $count = 1;
                                                $division = $db->fetch();
 
+                                                  foreach ($division as $key => $value) {
 
-                                              foreach ($division as $key => $value) {
-                                                     $name = $value["division"];
-                                                     $department_id = $value["department_id"];
-                                                     $emp_type = $value["emp_type_id"];
+                                                       $name = $value["division"];
+                                                       $department_id = $value["department_id"];
+                                                       $emp_type = $value["emp_type_id"];
 
                                                         // ลาออก
                                                         $sql = $db->query('SELECT
@@ -511,15 +512,11 @@ date_default_timezone_set("Asia/Bangkok");
                                                            $start_emp = $db->bind(':today', $today, PDO::PARAM_STR);
                                                            $start_emp = $db->bind(':name', $name);
                                                            $start_emp = $db->single();
-
-
-                                              ?>
+                                            ?>
 
                                                 <tr>
                                                     <td><?php echo $count; ?></td>
-                                                    <td>
-                                                       <?php echo $name; ?> </a>
-                                                    </td>
+                                                    <td><?php echo $name; ?></a></td>
                                                     <td><?php echo ($value["emp"]== "0"  ?  '-' : $value["emp"]); ?></a></td>
                                                     <td><?php echo ($value["contract"]== "0"  ?  '-' : $value["contract"]); ?></td>
                                                     <td><?php echo ($value["part_time"]== "0"  ?  '-' : $value["part_time"]); ?></td>
@@ -533,25 +530,27 @@ date_default_timezone_set("Asia/Bangkok");
                                                     <td><?php echo ($start_emp["part_time"] == "0" ? '-': $start_emp["part_time"]); ?></td>
                                                     <td><?php echo ($start_emp["total"] == "0" ? '-' : $start_emp["total"]); ?></td>
                                                 </tr>
-                                                <?php
-                                                        $count++;
+                                            <?php
+                                                  $count++;
+
                                                 }
-                                                ?>
+
+                                            ?>
                                                 <tr>
                                                   <td colspan="2"><div align="right"><b>รวม</b></div></td>
-                                                   <?php
-                                                   $all = $db->query('SELECT COUNT(CASE WHEN all_ro10_emp.emp_type_id = 1 then 1 ELSE NULL END) as "emp",
-                                                                            COUNT(CASE WHEN all_ro10_emp.emp_type_id = 2 then 1 ELSE NULL END) as "contract",
-                                                                            COUNT(CASE WHEN all_ro10_emp.emp_type_id = 3 then 1 ELSE NULL END) as "part_time",
-                                                                            COUNT(all_ro10_emp.division) as "total"
+                                                    <?php
+                                                        $all = $db->query("SELECT COUNT(CASE WHEN all_ro10_emp.emp_type_id = 1 then 1 ELSE NULL END) as 'emp',
+                                                                            COUNT(CASE WHEN all_ro10_emp.emp_type_id = 2 then 1 ELSE NULL END) as 'contract',
+                                                                            COUNT(CASE WHEN all_ro10_emp.emp_type_id = 3 then 1 ELSE NULL END) as 'part_time',
+                                                                            COUNT(all_ro10_emp.division) as 'total'
                                                                       FROM all_ro10_emp
-                                                                      WHERE all_ro10_emp.data_date = :today ');
-                                                    $all = $db->bind(':today', $today);
-                                                    $all = $db->execute();
-                                                    $all = $db->fetchNum();
+                                                                      WHERE all_ro10_emp.data_date = :today ");
+                                                        $all = $db->bind(':today', $today);
+                                                        $all = $db->execute();
+                                                        $all = $db->fetchNum();
 
                                             //ลาออก
-                                            $toal = $db->query('SELECT
+                                                        $toal = $db->query('SELECT
                                                                     all_ro10_emp_trans.date_finish,
                                                                     all_ro10_emp_trans.division,
                                                                     all_ro10_emp_trans.emp_id,
@@ -565,14 +564,14 @@ date_default_timezone_set("Asia/Bangkok");
                                                                 WHERE MONTH(all_ro10_emp_trans.date_finish) = :month
                                                                 AND date(all_ro10_emp_trans.data_date) = :today
                                                                 AND (YEAR(all_ro10_emp_trans.date_finish) = :year OR YEAR(all_ro10_emp_trans.date_finish) = :thai_year) ');
-                                             $toal = $db->bind(':today', $today);
-                                             $toal = $db->bind(':month', $month);
-                                             $toal = $db->bind(':year', $year);
-                                             $toal = $db->bind(':thai_year', $year_thai);
-                                             $toal = $db->single();
+                                                       $toal = $db->bind(':today', $today);
+                                                       $toal = $db->bind(':month', $month);
+                                                       $toal = $db->bind(':year', $year);
+                                                       $toal = $db->bind(':thai_year', $year_thai);
+                                                       $toal = $db->single();
 
                                              //เข้าใหม่
-                                                 $toal_new = $db->query('SELECT
+                                                        $toal_new = $db->query('SELECT
                                                                     all_ro10_emp.date_start,
                                                                     all_ro10_emp.division,
                                                                     all_ro10_emp.emp_id,
@@ -586,13 +585,12 @@ date_default_timezone_set("Asia/Bangkok");
                                                                 WHERE MONTH(all_ro10_emp.date_start) = :month
                                                                 AND date(all_ro10_emp.data_date) = :today
                                                                 AND (YEAR(all_ro10_emp.date_start) = :year OR YEAR(all_ro10_emp.date_start) = :thai_year)');
-                                             $toal_new = $db->bind(':today', $today);
-                                             $toal_new = $db->bind(':month', $month);
-                                             $toal_new = $db->bind(':year', $year);
-                                             $toal_new = $db->bind(':thai_year', $year_thai);
-                                             $toal_new = $db->single();
-
-                                                   ?>
+                                                         $toal_new = $db->bind(':today', $today);
+                                                         $toal_new = $db->bind(':month', $month);
+                                                         $toal_new = $db->bind(':year', $year);
+                                                         $toal_new = $db->bind(':thai_year', $year_thai);
+                                                         $toal_new = $db->single();
+                                            ?>
                                                     <td><?php echo ($all[0]== "0"  ?  '-' : $all[0]); ?></td>
                                                     <td><?php echo ($all[1]== "0"  ?  '-' : $all[1]); ?></td>
                                                     <td><?php echo ($all[2]== "0"  ?  '-' : $all[2]); ?></td>
@@ -613,14 +611,10 @@ date_default_timezone_set("Asia/Bangkok");
                             </div>
                         </div>
                     </div>
-    
-
-
-
             </div><!-- container-fluid -->
         </div><!-- page-content-wrapper -->
 
 
-   
+
 </body>
 </html>

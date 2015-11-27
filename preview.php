@@ -72,8 +72,6 @@
                           <option value="0"> - - เลือก - - </option>
                           <?php
                              $section = $db->fetch();
-
-
                              foreach ($section as $key => $v) {
                                   $section_name = $v['section'];
 

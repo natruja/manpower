@@ -1,5 +1,5 @@
-<?php 
-date_default_timezone_set("Asia/Bangkok");
+<?php
+  date_default_timezone_set("Asia/Bangkok");
 ?>
 <!DOCTYPE html>
 <html lang="th">
@@ -26,37 +26,35 @@ date_default_timezone_set("Asia/Bangkok");
 
 </head>
 <body>
-<?php
-    //include_once('themes/left.php');
- ?>
+
  <div id="page-content-wrapper">
      <div class="container-fluid">
-      <?php 
-        $monthNum  = date("m");
-        $dateObj   = DateTime::createFromFormat('!m', $monthNum);
-        $monthName = $dateObj->format('F'); // March
-      ?>
+        <?php
+              $monthNum  = date("m");
+              $dateObj   = DateTime::createFromFormat('!m', $monthNum);
+              $monthName = $dateObj->format('F'); // March
+        ?>
         <h1>พนักงานเข้าใหม่เดือน <?php echo  $monthName; ?></h1>
         <hr>
         <div class="row">
             <div class="col-lg-12 col-md-6">
                 <div class="panel panel-primary">
                       <div class="panel-heading">
-                            <h3 class="panel-title">รายชื่อพนักงานเข้าใหม่</h3>
+                          <h3 class="panel-title">รายชื่อพนักงานเข้าใหม่</h3>
                       </div>
                       <div class="panel-body">
                         <div class="col-lg-12 col-md-6">
                             <?php
                                 require_once('core/init.php');
 
-                                $db = new DB;
+                                  $db = new DB;
 
                                   $today = date("Y-m-d");
                                   $month = date("m");
                                   $year = date("Y");
                                   $year_thai = "2558";
 
-                                 $start_emp = $db->query('SELECT date_start,emp_id,t_firstname,t_lastname,job_title,section,division,date_start  FROM all_ro10_emp
+                                  $start_emp = $db->query('SELECT date_start,emp_id,t_firstname,t_lastname,job_title,section,division,date_start  FROM all_ro10_emp
                                                          WHERE MONTH(date_start) = :month
                                                          AND (YEAR(date_start) = :thai_year OR  YEAR(date_start) = :year)
                                                          AND data_date = :today ');
@@ -66,7 +64,7 @@ date_default_timezone_set("Asia/Bangkok");
                                    $start_emp = $db->bind(':today', $today, PDO::PARAM_STR);
                                    $start_emp = $db->execute();
                                    $start_emp = $db->rowCount();
-                             ?>
+                            ?>
                                  <table class="table table-striped table-bordered" id="new_emp" cellspacing="0" width="100%">
                                     <thead>
                                         <tr>
@@ -84,7 +82,8 @@ date_default_timezone_set("Asia/Bangkok");
                                     <?php
                                         $start_emp = $db->fetch();
                                         $i = 1;
-                                        foreach ($start_emp as $key => $value) {
+                                          foreach ($start_emp as $key => $value) {
+
                                     ?>
                                         <tr>
                                             <td><?php echo  $i; ?></td>
@@ -97,9 +96,10 @@ date_default_timezone_set("Asia/Bangkok");
                                             <td><?php echo $value["date_start"]; ?></td>
                                         </tr>
                                         <?php
-                                            $i++;
-                                            }
-                                         ?>
+                                              $i++;
+
+                                          }
+                                        ?>
                                     </tbody>
                                 </table>
                             </div>
